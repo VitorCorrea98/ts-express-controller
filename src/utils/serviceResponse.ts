@@ -5,12 +5,12 @@ import type {
 } from "../types/httpStatus";
 
 /**
- * Representa uma resposta de sucesso retornada por um serviço.
+ * Represents a successful response returned by a service.
  *
- * @template T - Tipo dos dados opcionais retornados.
- * @property {TGoodStatus} status - Código HTTP de sucesso (ex: 'OK', 'CREATED').
- * @property {string} message - Mensagem descritiva da resposta.
- * @property {T} [data] - Dados adicionais retornados pelo serviço.
+ * @template T - Type of the optional returned data.
+ * @property {TGoodStatus} status - HTTP success code (e.g., 'OK', 'CREATED').
+ * @property {string} message - Descriptive message of the response.
+ * @property {T} [data] - Additional data returned by the service.
  */
 export type ServiceSuccessResponse<T = unknown> = {
 	status: TGoodStatus;
@@ -19,12 +19,12 @@ export type ServiceSuccessResponse<T = unknown> = {
 };
 
 /**
- * Representa uma resposta de erro retornada por um serviço.
+ * Represents an error response returned by a service.
  *
- * @template T - Tipo do valor de erro detalhado.
- * @property {TBadStatus | TServerStatus} status - Código HTTP de erro (ex: 'BAD_REQUEST', 'INTERNAL_SERVER_ERROR').
- * @property {string} message - Mensagem descritiva do erro.
- * @property {T} error - Informação detalhada do erro.
+ * @template T - Type of the detailed error value.
+ * @property {TBadStatus | TServerStatus} status - HTTP error code (e.g., 'BAD_REQUEST', 'INTERNAL_SERVER_ERROR').
+ * @property {string} message - Descriptive error message.
+ * @property {T} error - Detailed error information.
  */
 export type ServiceErrorResponse<T = unknown> = {
 	status: TBadStatus | TServerStatus;
@@ -33,19 +33,19 @@ export type ServiceErrorResponse<T = unknown> = {
 };
 
 /**
- * Representa a resposta geral de um serviço, que pode ser sucesso ou erro.
+ * Represents a general service response, which can be either success or error.
  *
  * @type {ServiceSuccessResponse | ServiceErrorResponse}
  */
 export type ServiceResponse = ServiceSuccessResponse | ServiceErrorResponse;
 
 /**
- * Tipo genérico para definir funções de serviço.
+ * Generic type for defining service functions.
  *
- * @template TInput - Tipo do input esperado pela função.
- * @template TResponse - Tipo da resposta que será retornada.
- * @param {TInput} input - Dados de entrada do serviço.
- * @returns {Promise<TResponse>} - Promessa que resolve com a resposta do serviço.
+ * @template TInput - Type of the expected input for the function.
+ * @template TResponse - Type of the response that will be returned.
+ * @param {TInput} input - Input data for the service.
+ * @returns {Promise<TResponse>} - A promise that resolves with the service response.
  */
 export type ServiceFunction<TInput, TResponse> = (
 	input: TInput,

@@ -1,42 +1,42 @@
 import type { NextFunction, Request, Response } from "express";
+import type { GenericMiddleware } from "../types/genericMiddleware";
+import { getHTTPStatus } from "../types/httpStatus";
 import type {
 	ServiceFunction,
 	ServiceResponse,
 } from "../utils/serviceResponse";
-import type { GenericMiddleware } from "../types/genericMiddleware";
-import { getHTTPStatus } from "../types/httpStatus";
 
 /**
- * Cria um controller genérico para Express que executa uma função de serviço, processa o input
- * e responde automaticamente com o status HTTP e JSON correto.
+ * Creates a generic controller for Express that executes a service function, processes the input,
+ * and automatically responds with the correct HTTP status and JSON.
  *
- * @template TInput - Tipo dos dados de entrada processados pela serviceFunction.
- * @template TResponse - Tipo esperado como retorno da serviceFunction (deve estender ServiceResponse).
- * @template TRequest - Tipo do Request do Express, default é Request.
+ * @template TInput - Type of the input data processed by the service function.
+ * @template TResponse - Type expected as the return value from the service function (should extend ServiceResponse).
+ * @template TRequest - Type of the Express Request, defaults to Request.
  *
- * @param {ServiceFunction<TInput, TResponse>} serviceFunction - Função de serviço que executa a lógica principal.
- * @param {(req: TRequest) => TInput} [selector=(req) => req.body as TInput] - Função opcional para extrair os dados do Request.
- * @param {GenericMiddleware<TRequest, Response, NextFunction>[]} [middlewares=[]] - Array opcional de middlewares adicionais.
+ * @param {ServiceFunction<TInput, TResponse>} serviceFunction - The service function that executes the main logic.
+ * @param {(req: TRequest) => TInput} [selector=(req) => req.body as TInput] - Optional function to extract data from the Request.
+ * @param {GenericMiddleware<TRequest, Response, NextFunction>[]} [middlewares=[]] - Optional array of additional middlewares.
  *
- * @returns {Array} Um array de middlewares Express, pronto para ser usado em rotas.
+ * @returns {Array} An array of Express middlewares, ready to be used in routes.
  *
  * @example
  * import express from 'express';
- * import { genericController } from 'minha-lib';
+ * import { genericController } from 'my-lib';
  * import { myServiceFunction } from './services';
  *
  * const router = express.Router();
  *
  * router.post(
  *   '/user',
- *   ...genericController(myServiceFunction)
+ *   genericController(myServiceFunction)
  * );
  *
  * @example
- * // Usando um selector customizado e middlewares
+ * // Using a custom selector and middlewares
  * router.post(
  *   '/user',
- *   ...genericController(
+ *   genericController(
  *     myServiceFunction,
  *     (req) => ({ userId: req.params.id }),
  *     [authMiddleware]

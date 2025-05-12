@@ -1,11 +1,11 @@
 /**
- * Códigos HTTP de sucesso (2xx).
+ * HTTP success status codes (2xx).
  *
- * @property {number} OK - Requisição bem-sucedida (200).
- * @property {number} CREATED - Recurso criado com sucesso (201).
- * @property {number} ACCEPTED - Requisição aceita, processamento pendente (202).
- * @property {number} NO_CONTENT - Requisição bem-sucedida, sem conteúdo (204).
- * @property {number} PARTIAL_CONTENT - Conteúdo parcial retornado (206).
+ * @property {number} OK - Successful request (200).
+ * @property {number} CREATED - Resource successfully created (201).
+ * @property {number} ACCEPTED - Request accepted, processing pending (202).
+ * @property {number} NO_CONTENT - Successful request with no content (204).
+ * @property {number} PARTIAL_CONTENT - Partial content returned (206).
  */
 export const HTTPGoodStatus = {
 	OK: 200,
@@ -16,17 +16,17 @@ export const HTTPGoodStatus = {
 } as const;
 
 /**
- * Códigos HTTP de erro do cliente (4xx).
+ * HTTP client error status codes (4xx).
  *
- * @property {number} BAD_REQUEST - Sintaxe inválida (400).
- * @property {number} UNAUTHORIZED - Autenticação necessária (401).
- * @property {number} FORBIDDEN - Acesso não permitido (403).
- * @property {number} NOT_FOUND - Recurso não encontrado (404).
- * @property {number} METHOD_NOT_ALLOWED - Método HTTP não permitido (405).
- * @property {number} REQUEST_TIMEOUT - Tempo de requisição excedido (408).
- * @property {number} CONFLICT - Conflito com estado do recurso (409).
- * @property {number} UNPROCESSABLE_ENTITY - Entrada semanticamente inválida (422).
- * @property {number} TOO_MANY_REQUESTS - Limite de requisições excedido (429).
+ * @property {number} BAD_REQUEST - Invalid syntax (400).
+ * @property {number} UNAUTHORIZED - Authentication required (401).
+ * @property {number} FORBIDDEN - Access not allowed (403).
+ * @property {number} NOT_FOUND - Resource not found (404).
+ * @property {number} METHOD_NOT_ALLOWED - HTTP method not allowed (405).
+ * @property {number} REQUEST_TIMEOUT - Request timeout exceeded (408).
+ * @property {number} CONFLICT - Conflict with resource state (409).
+ * @property {number} UNPROCESSABLE_ENTITY - Semantically invalid input (422).
+ * @property {number} TOO_MANY_REQUESTS - Rate limit exceeded (429).
  */
 export const HTTPBadStatus = {
 	BAD_REQUEST: 400,
@@ -41,12 +41,12 @@ export const HTTPBadStatus = {
 } as const;
 
 /**
- * Códigos HTTP de erro do servidor (5xx).
+ * HTTP server error status codes (5xx).
  *
- * @property {number} INTERNAL_SERVER_ERROR - Erro interno genérico (500).
- * @property {number} BAD_GATEWAY - Resposta inválida do upstream (502).
- * @property {number} SERVICE_UNAVAILABLE - Servidor temporariamente indisponível (503).
- * @property {number} GATEWAY_TIMEOUT - Timeout na comunicação com upstream (504).
+ * @property {number} INTERNAL_SERVER_ERROR - Generic internal error (500).
+ * @property {number} BAD_GATEWAY - Invalid response from upstream (502).
+ * @property {number} SERVICE_UNAVAILABLE - Server temporarily unavailable (503).
+ * @property {number} GATEWAY_TIMEOUT - Timeout communicating with upstream (504).
  */
 export const HTTPServerErrorStatus = {
 	INTERNAL_SERVER_ERROR: 500,
@@ -56,7 +56,7 @@ export const HTTPServerErrorStatus = {
 } as const;
 
 /**
- * Mapeia todos os códigos HTTP disponíveis combinando sucessos, erros do cliente e erros do servidor.
+ * Maps all available HTTP status codes combining success, client errors, and server errors.
  */
 export const HTTPStatusMap = {
 	...HTTPGoodStatus,
@@ -65,29 +65,29 @@ export const HTTPStatusMap = {
 } as const;
 
 /**
- * Tipo para as chaves dos códigos de sucesso (2xx).
+ * Type for the keys of success status codes (2xx).
  */
 export type TGoodStatus = keyof typeof HTTPGoodStatus;
 
 /**
- * Tipo para as chaves dos códigos de erro do cliente (4xx).
+ * Type for the keys of client error status codes (4xx).
  */
 export type TBadStatus = keyof typeof HTTPBadStatus;
 
 /**
- * Tipo para as chaves dos códigos de erro do servidor (5xx).
+ * Type for the keys of server error status codes (5xx).
  */
 export type TServerStatus = keyof typeof HTTPServerErrorStatus;
 
 /**
- * Tipo para as chaves de todos os códigos HTTP disponíveis.
+ * Type for the keys of all available HTTP status codes.
  */
 export type TStatus = keyof typeof HTTPStatusMap;
 
 /**
- * Função utilitária para obter o número do código HTTP a partir de uma chave de status.
+ * Utility function to get the HTTP status code number from a status key.
  *
- * @param {TStatus} status - Nome da chave do status HTTP (ex: 'OK', 'BAD_REQUEST').
- * @returns {number} - Número do código HTTP correspondente (ex: 200, 400).
+ * @param {TStatus} status - Name of the HTTP status key (e.g., 'OK', 'BAD_REQUEST').
+ * @returns {number} - Corresponding HTTP status code (e.g., 200, 400).
  */
 export const getHTTPStatus = (status: TStatus) => HTTPStatusMap[status];
