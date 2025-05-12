@@ -8,16 +8,12 @@
 	"license": "MIT",
 	"type": "commonjs",
 	"main": "./dist/index.js",
-	"module": "./dist/idnex.js",
+	"module": "./dist/index.js",
 	"types": "./dist/index.d.ts",
 	"exports": {
 		"import": {
 			"types": "./dist/index.d.ts",
 			"import": "./dist/index.js"
-		},
-		"require": {
-			"types": "./dist/index.d.cts",
-			"require": "./dist/index.cjs"
 		}
 	},
 	"scripts": {
