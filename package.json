@@ -1,21 +1,13 @@
 {
 	"name": "ts-express-generic",
 	"version": "0.0.3",
-	"files": [
-		"./dist"
-	],
+	"files": ["./dist"],
 	"description": "A generic TypeScript controller and service response types for Express",
-	"keywords": [
-		"typescript",
-		"express",
-		"API",
-		"controller",
-		"generic"
-	],
+	"keywords": ["typescript", "express", "API", "controller", "generic"],
 	"author": "Vitor Correa",
 	"license": "MIT",
 	"type": "commonjs",
-	"main": "./dist/index.cjs",
+	"main": "./dist/index.js",
 	"module": "./dist/idnex.js",
 	"types": "./dist/index.d.ts",
 	"exports": {
