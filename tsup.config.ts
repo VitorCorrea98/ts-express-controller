@@ -9,4 +9,6 @@ export default defineConfig({
 	sourcemap: true,
 	shims: true,
 	minify: false,
+	splitting: false,
+	legacyOutput: true,
 });
