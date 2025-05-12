@@ -1,17 +1,9 @@
 {
 	"name": "ts-express-generic",
 	"version": "0.0.2",
-	"files": [
-		"./dist"
-	],
+	"files": ["./dist"],
 	"description": "A generic TypeScript controller and service response types for Express",
-	"keywords": [
-		"typescript",
-		"express",
-		"API",
-		"controller",
-		"generic"
-	],
+	"keywords": ["typescript", "express", "API", "controller", "generic"],
 	"author": "Vitor Correa",
 	"license": "MIT",
 	"type": "commonjs",
@@ -34,8 +26,7 @@
 		"dev": "tsup --watch"
 	},
 	"dependencies": {
-		"express": "^5.1.0",
-		"ts-express-controller": "^0.3.1"
+		"express": "^5.1.0"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^1.9.4",
