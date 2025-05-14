@@ -7,7 +7,7 @@
  * @property {number} NO_CONTENT - Successful request with no content (204).
  * @property {number} PARTIAL_CONTENT - Partial content returned (206).
  */
-export const HTTPGoodStatus = {
+const HTTPGoodStatus = {
 	OK: 200,
 	CREATED: 201,
 	ACCEPTED: 202,
@@ -28,7 +28,7 @@ export const HTTPGoodStatus = {
  * @property {number} UNPROCESSABLE_ENTITY - Semantically invalid input (422).
  * @property {number} TOO_MANY_REQUESTS - Rate limit exceeded (429).
  */
-export const HTTPBadStatus = {
+const HTTPBadStatus = {
 	BAD_REQUEST: 400,
 	UNAUTHORIZED: 401,
 	FORBIDDEN: 403,
@@ -48,7 +48,7 @@ export const HTTPBadStatus = {
  * @property {number} SERVICE_UNAVAILABLE - Server temporarily unavailable (503).
  * @property {number} GATEWAY_TIMEOUT - Timeout communicating with upstream (504).
  */
-export const HTTPServerErrorStatus = {
+const HTTPServerErrorStatus = {
 	INTERNAL_SERVER_ERROR: 500,
 	BAD_GATEWAY: 502,
 	SERVICE_UNAVAILABLE: 503,
@@ -88,6 +88,6 @@ export type TStatus = keyof typeof HTTPStatusMap;
  * Utility function to get the HTTP status code number from a status key.
  *
  * @param {TStatus} status - Name of the HTTP status key (e.g., 'OK', 'BAD_REQUEST').
- * @returns {number} - Corresponding HTTP status code (e.g., 200, 400).
+ * @returns {HTTpStatusMap[number]} - Corresponding HTTP status code (e.g., 200, 400).
  */
 export const getHTTPStatus = (status: TStatus) => HTTPStatusMap[status];

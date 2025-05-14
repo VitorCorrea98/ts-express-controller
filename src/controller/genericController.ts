@@ -1,72 +1,60 @@
-import type { NextFunction, Request, Response } from "express";
-import type { GenericMiddleware } from "../types/genericMiddleware";
-import { getHTTPStatus } from "../types/httpStatus";
-import type {
-	ServiceFunction,
-	ServiceResponse,
-} from "../utils/serviceResponse";
+import type { NextFunction, Request, RequestHandler, Response } from "express";
+import type { ServiceResponse } from "../utils/serviceResponse";
+import { getHTTPStatus } from "../types";
 
-/**
- * Creates a generic controller for Express that executes a service function, processes the input,
- * and automatically responds with the correct HTTP status and JSON.
- *
- * @template TInput - Type of the input data processed by the service function.
- * @template TResponse - Type expected as the return value from the service function (should extend ServiceResponse).
- * @template TRequest - Type of the Express Request, defaults to Request.
- *
- * @param {ServiceFunction<TInput, TResponse>} serviceFunction - The service function that executes the main logic.
- * @param {(req: TRequest) => TInput} [selector=(req) => req.body as TInput] - Optional function to extract data from the Request.
- * @param {GenericMiddleware<TRequest, Response, NextFunction>[]} [middlewares=[]] - Optional array of additional middlewares.
- *
- * @returns {Array} An array of Express middlewares, ready to be used in routes.
- *
- * @example
- * import express from 'express';
- * import { genericController } from 'my-lib';
- * import { myServiceFunction } from './services';
- *
- * const router = express.Router();
- *
- * router.post(
- *   '/user',
- *   genericController(myServiceFunction)
- * );
- *
- * @example
- * // Using a custom selector and middlewares
- * router.post(
- *   '/user',
- *   genericController(
- *     myServiceFunction,
- *     (req) => ({ userId: req.params.id }),
- *     [authMiddleware]
- *   )
- * );
- */
+export type TAllowedRequestKeys =
+	| "body"
+	| "params"
+	| "query"
+	| "headers"
+	| "locals";
+
+export type TExtractedRequest<T extends TAllowedRequestKeys> = {
+	[K in T]: K extends "locals"
+		? Record<string, unknown>
+		: K extends keyof Request
+			? Request[K]
+			: never;
+};
+
+export const getRequestObjectKeys = <T extends TAllowedRequestKeys>(
+	keys: T[],
+	req: Request,
+	res: Response,
+): TExtractedRequest<T> => {
+	const result = {} as TExtractedRequest<T>;
+	for (const key of keys) {
+		result[key] = key === "locals" ? res.locals : req[key as keyof Request];
+	}
+	return result;
+};
+
+export type ControllerConfig<
+	T extends TAllowedRequestKeys,
+	R extends TExtractedRequest<T>,
+> = {
+	service: (input: R) => Promise<ServiceResponse>;
+	requestKeys: T[];
+	middlewares: RequestHandler[];
+};
+
 export const genericController = <
-	TInput,
-	TResponse extends ServiceResponse,
-	TRequest extends Request = Request,
+	T extends TAllowedRequestKeys,
+	R extends TExtractedRequest<T>,
 >(
-	serviceFunction: ServiceFunction<TInput, TResponse>,
-	selector: (req: TRequest) => TInput = (req) => req.body as TInput,
-	middlewares: GenericMiddleware<TRequest, Response, NextFunction>[] = [],
+	config: ControllerConfig<T, R>,
 ) => [
-	...middlewares,
-	async (req: TRequest, res: Response): Promise<void> => {
+	...config.middlewares,
+	async (req: Request, res: Response, next: NextFunction) => {
 		try {
-			const inputData = selector(req);
-			const serviceResponse = await serviceFunction(inputData);
+			const input = getRequestObjectKeys(config.requestKeys, req, res);
 
-			const httpStatus = getHTTPStatus(serviceResponse.status);
+			const response = await config.service(input as R);
 
-			res.status(httpStatus).json(serviceResponse);
+			res.status(getHTTPStatus(response.status)).json(response);
+			return;
 		} catch (error) {
-			res.status(500).json({
-				status: "ERROR",
-				message: "Internal server error",
-				error: error instanceof Error ? error.message : "Unknown error",
-			});
+			next(error);
 		}
 	},
 ];
